@@ -1,0 +1,50 @@
+/* Signal2Noise custom styles (theme colours come from bslib in R/ui_helpers.R) */
+
+.navbar .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.navbar .brand img { border-radius: 4px; }
+
+.news-badge {
+  position: absolute;
+  top: 2px;
+  right: -4px;
+  font-size: 0.65rem;
+}
+
+.hero {
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  color: #fff;
+  background: linear-gradient(120deg, #0B3C5D 0%, #0B6E99 60%, #2E8BB0 100%);
+}
+.hero h2 { font-weight: 700; margin-bottom: 0.35rem; }
+.hero .lead { font-size: 1.05rem; max-width: 60rem; opacity: 0.95; }
+
+/* Value boxes that reflow when a metric is hidden (conditionalPanel = display:none). */
+.vb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.vb-grid > div > .bslib-value-box { height: 100%; margin-bottom: 0; }
+
+.envelope-ok { color: #2E7D5B; }
+
+ol.steps li { margin-bottom: 0.45rem; }
+
+.card-header { font-weight: 600; }
+.card-header .form-group,
+.card-header .shiny-input-container { margin-bottom: 0; }
+
+.bslib-sidebar-layout > .sidebar .accordion-button { padding: 0.6rem 0.75rem; font-weight: 600; }
+.bslib-sidebar-layout > .sidebar .accordion-body { padding: 0.5rem 0.75rem; }
+.bslib-sidebar-layout > .sidebar .irs--shiny .irs-bar { background: #0B6E99; border-color: #0B6E99; }
+.bslib-sidebar-layout > .sidebar .irs--shiny .irs-single { background: #0B6E99; }
+
+table.table { font-size: 0.9rem; }
+dl dt { margin-top: 0.4rem; }

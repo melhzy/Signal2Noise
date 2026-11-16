@@ -1,0 +1,5 @@
+*.RData binary
+*.rds binary
+*.csv -text
+*.jpg binary
+*.png binary
