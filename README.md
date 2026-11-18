@@ -95,7 +95,7 @@ git push --force https://github.com/melhzy/Signal2Noise.git gh-pages
 ```
 
 The first visit downloads up to about 100 MB (R runtime and packages) and takes
-20–60 seconds to start; browsers cache it after that.
+about a minute to start; later visits load from the browser cache in about 15 s.
 
 ## Changes from the 2019 version
 
