@@ -9,6 +9,10 @@ samples) and fish (50 samples) collected 2008–2017.
 Built at Harrisburg University by Pranita, Sri, Emily, Ziyuan and Igor (2019);
 modernized in 2026.
 
+**Website and live app:** https://melhzy.github.io/Signal2Noise/ (the app runs
+in your browser through [Shinylive](https://posit-dev.github.io/r-shinylive/);
+no R installation needed).
+
 ## Run it
 
 ```r
@@ -52,6 +56,8 @@ data/
   model_cache.rds     fitted models + prepared data (generated)
   messages.csv        items shown under the bell icon
 scripts/build_models.R  force a refit
+scripts/build_site.R    build the GitHub Pages site into _site/
+site/                 project page (index.html + screenshots)
 tests/testthat/       model parity + server/module tests
 www/                  logos, favicon, styles.css
 ```
@@ -66,6 +72,30 @@ The tests check that predictions at the default settings match the 2019 app
 (for example macro Hill's N1 = 8.8906 and fish Hill's N1 = 11.9237), along with
 the fit statistics, the sensitivity helpers, and every page's server logic via
 `shiny::testServer()`.
+
+## Website
+
+The GitHub Pages site is a project page (`site/`) plus the whole app compiled
+with Shinylive, so it runs on webR in the visitor's browser. The browser build
+ships only `data/model_cache.rds` and `data/messages.csv`; without the raw data
+files, `load_app_data()` uses the cached models as they are.
+
+```sh
+Rscript -e 'install.packages("shinylive")'   # once
+Rscript scripts/build_site.R                 # writes _site/ (about 120 MB)
+Rscript -e 'httpuv::runStaticServer("_site")' # optional local preview
+```
+
+To publish, replace the `gh-pages` branch with the contents of `_site/`:
+
+```sh
+cd _site
+git init -b gh-pages && git add -A && git commit -m "Build site"
+git push --force https://github.com/melhzy/Signal2Noise.git gh-pages
+```
+
+The first visit downloads up to about 100 MB (R runtime and packages) and takes
+20–60 seconds to start; browsers cache it after that.
 
 ## Changes from the 2019 version
 

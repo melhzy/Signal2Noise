@@ -89,3 +89,18 @@ test_that("cached models work in a fresh session without mgcv attached", {
   out <- system2(rscript, c("--vanilla", shQuote(script)), stdout = TRUE, stderr = FALSE)
   expect_equal(tail(out, 1), "summary.gam")
 })
+
+test_that("the cache alone is enough when the raw data are absent (browser build)", {
+  # The Shinylive site ships data/model_cache.rds without DataAll.RData or the
+  # grid CSV; load_app_data() must use the cache as is instead of refitting.
+  cache <- normalizePath(file.path(app_dir, PATHS$cache))
+  dir <- withr::local_tempdir()
+  dir.create(file.path(dir, "data"))
+  file.copy(cache, file.path(dir, PATHS$cache))
+  withr::local_dir(dir)
+  a <- load_app_data()
+  expect_named(a$models, c("macro", "fish"))
+  expect_equal(nrow(a$data$fish), 50)
+  file.remove(PATHS$cache)
+  expect_error(load_app_data(), "Cannot fit models")
+})

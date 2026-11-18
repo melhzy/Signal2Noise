@@ -66,18 +66,25 @@ cache_fingerprint <- function() {
 
 # Fitting takes ~10-30 s, so fitted models are cached in data/model_cache.rds
 # and refit only when the data, grid file or mgcv version changes.
+# Without the raw inputs (the in-browser Shinylive build ships only the cache)
+# the cached models are used as they are.
 load_app_data <- function(rebuild = FALSE, cache = PATHS$cache) {
   # Register mgcv's S3 methods (summary.gam, predict.gam, ...) before any cached
   # model is used; otherwise summary() silently dispatches to summary.glm.
   loadNamespace("mgcv")
-  fp <- cache_fingerprint()
+  have_inputs <- all(file.exists(c(PATHS$data, PATHS$grid)))
   if (!rebuild && file.exists(cache)) {
     obj <- tryCatch(readRDS(cache), error = function(e) NULL)
-    if (!is.null(obj) && identical(obj$fingerprint, fp)) return(obj)
+    if (!is.null(obj) && (!have_inputs || identical(obj$fingerprint, cache_fingerprint()))) {
+      return(obj)
+    }
     message("Model cache is stale or unreadable; refitting models.")
   }
+  if (!have_inputs) {
+    stop("Cannot fit models: ", PATHS$data, " or ", PATHS$grid, " is missing.", call. = FALSE)
+  }
   obj <- build_app_data()
-  obj$fingerprint <- fp
+  obj$fingerprint <- cache_fingerprint()
   tryCatch(saveRDS(obj, cache),
            error = function(e) message("Could not write model cache: ", conditionMessage(e)))
   obj
